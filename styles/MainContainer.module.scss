@@ -1,0 +1,12 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  width: 100%;
+  border-bottom: 1px solid rgba(82, 140, 255, 0.7);
+
+  h2 {
+    font: 600 1.5em 'Helvetica';
+  }
+}
