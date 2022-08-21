@@ -29,6 +29,24 @@
   align-items: center;
   flex-direction: row;
 
+
+  .sortContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    border: 1px solid rgba(82, 140, 255, 0.7);
+    border-radius: 4px;
+    padding: 5px;
+  }
+
+  .labelContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
   button {
     background: transparent;
     border: none;
@@ -39,6 +57,27 @@
     &:hover {
       box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
     }
+  }
+
+  select {
+    display: block;
+    background: none;
+    color: rgba(0, 50, 149, 0.702);
+    border: 1px solid rgba(82, 140, 255, 0.7);
+    border-radius: 4px;
+    font: 100 0.7em 'Helvetica';
+    margin: 0 10px;
+  }
+
+  label {
+    font: 100 0.6em 'Helvetica';
+    margin-bottom: 5px;
+  }
+
+  .sortContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -54,7 +93,7 @@
     color: rgba(82, 140, 255, 0.7);
     transition: 0.1s linear;
     font: 100 0.7em 'Helvetica';
-    
+
   }
 
   input {

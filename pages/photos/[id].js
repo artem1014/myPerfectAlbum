@@ -1,10 +1,28 @@
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react";
 import MainContainer from "../../components/MainContainer";
 import styles from '../../styles/Post.module.scss'
 
-export default function Photo({ photo }) {
-  const { query } = useRouter();
+export default function Photo() {
+  const { query } = useRouter()
+  const [photo, setPhoto] = useState({});
   const keyword = `Photo ${photo.id}`
+  const getPhoto = async () => {
+    const response = await fetch('/api/onePhoto', {
+      method: 'POST',
+      body: JSON.stringify({ id: query.id }),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    })
+
+    const post = await response.json();
+    setPhoto(post);
+  }
+
+  useEffect(() => {
+    getPhoto();
+  }, [])
 
   return (
     <MainContainer keywords={keyword} backToMain>
@@ -16,6 +34,7 @@ export default function Photo({ photo }) {
             </div>
             <div className={styles.title_post}>
               <h2>{query.id}</h2>
+              <span>Create date: {photo.createDate}</span>
               <p>{photo.title}</p>
             </div>
           </div>
@@ -23,12 +42,4 @@ export default function Photo({ photo }) {
       </div>
     </MainContainer>
   )
-}
-
-export async function getServerSideProps({ params }) {
-  const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${params.id}`)
-  const photo = await response.json()
-  return {
-    props: { photo },
-  }
 }

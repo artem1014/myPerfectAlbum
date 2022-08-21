@@ -7,6 +7,7 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
   const [addPostDialog, setAddPostDialog] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
+  const [sortType, setSortType] = useState(0)
 
   const addButtonDialogOpener = useCallback(() => {
     setAddPostDialog(!addPostDialog)
@@ -14,7 +15,7 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
     [setAddPostDialog, addPostDialog],
   )
 
-  const addPostSubmitHandler = useCallback((event) => {
+  const addPostSubmitHandler = useCallback(async (event) => {
     event.preventDefault();
     const { target } = event;
 
@@ -39,24 +40,45 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
       setTimeout(() => setErrorMessage(''), 2000)
     } else {
       setSuccessMessage('Great!')
-      setPhotos(prev => [...prev, newPhoto])
       setTimeout(() => setSuccessMessage(''), 2000)
-      return
+
+      const response = await fetch('api/photos', {
+        method: 'POST',
+        body: JSON.stringify({ newPhoto, sortDirection }),
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      setPhotos(data);
     }
   },
     [setErrorMessage, photos, setPhotos],
   )
 
+  const onSelectionChange = (event) => {
+    setSortType(event.target.value)
+  }
+
   return (
     <div className={styles.filtersContainer}>
       <div className={styles.searchSortContainer}>
-        <button onClick={onSortClick}>
-          {sortDirection ?
-            <img src='/sortAsc.svg' />
-            :
-            <img src='/sortDesc.svg' />
-          }
-        </button>
+        <div className={styles.sortContainer}>
+          <div className={styles.labelContainer}>
+            <label>SORT BY</label>
+            <select defaultValue={0} onChange={onSelectionChange}>
+              <option value={0}>Date</option>
+              <option value={1}>ID</option>
+            </select>
+          </div>
+          <button onClick={() => onSortClick(sortType)}>
+            {sortDirection ?
+              <img src='/sortAsc.svg' />
+              :
+              <img src='/sortDesc.svg' />
+            }
+          </button>
+        </div>
         <div className={styles.input_control}>
           <input onChange={onChangeFilter} id="lookingId" placeholder=' ' />
           <label>FILTER BY PHOTO ID</label>
