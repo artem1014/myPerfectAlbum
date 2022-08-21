@@ -43,7 +43,7 @@ export default function Home({ posts }) {
           photos={photos}
           setPhotos={setPhotos}
         />
-        <div className={styles.w}>
+        <div className={styles.content}>
           {photos
             .filter(ph => ph.id.toString().includes(filterValue) || filterValue === '')
             .map((photo) => (
