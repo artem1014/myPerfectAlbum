@@ -23,7 +23,7 @@ export default function Index() {
     });
     const data = await response.json();
 
-    setPhotos(data.photos)
+    setPhotos(data)
 
   }, [setSortDirection, sortDirection, photos])
 

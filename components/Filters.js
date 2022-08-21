@@ -9,19 +9,20 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
   const [successMessage, setSuccessMessage] = useState('')
   const [sortType, setSortType] = useState(0)
 
-  const addButtonDialogOpener = useCallback(() => {
+  const addFormToggler = useCallback(() => {
     setAddPostDialog(!addPostDialog)
   },
     [setAddPostDialog, addPostDialog],
   )
 
-  const addPostSubmitHandler = useCallback(async (event) => {
+  const formSubmitHandler = useCallback(async (event) => {
     event.preventDefault();
     const { target } = event;
 
     const newPhoto = {
       id: Number(target.id?.value),
       url: target.url?.value,
+      thumbnailUrl: target.url?.value,
       title: target.title?.value,
       createDate: formatDate(new Date())
     }
@@ -39,12 +40,13 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
       setErrorMessage('Enter valid URL')
       setTimeout(() => setErrorMessage(''), 2000)
     } else {
+      setAddPostDialog(false)
       setSuccessMessage('Great!')
       setTimeout(() => setSuccessMessage(''), 2000)
 
       const response = await fetch('api/photos', {
         method: 'POST',
-        body: JSON.stringify({ newPhoto, sortDirection }),
+        body: JSON.stringify({ newPhoto }),
         headers: {
           'Content-type': 'application/json',
         },
@@ -67,8 +69,8 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
           <div className={styles.labelContainer}>
             <label>SORT BY</label>
             <select defaultValue={0} onChange={onSelectionChange}>
-              <option value={0}>Date</option>
-              <option value={1}>ID</option>
+              <option value={0}>ID</option>
+              <option value={1}>Date</option>
             </select>
           </div>
           <button onClick={() => onSortClick(sortType)}>
@@ -89,7 +91,7 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
           <div className={styles.closeButtonContainer}>
             <button
               className={styles.button}
-              onClick={addButtonDialogOpener}
+              onClick={addFormToggler}
               style={{ '--color': 'rgba(0, 163, 98, 0.7)' }}
             >
               ADD NEW PHOTO TO THE ALBUM
@@ -97,7 +99,7 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
           </div>
         ) : (
           <div className={styles.addPostContainer}>
-            <form className={styles.postform} onSubmit={addPostSubmitHandler} name="myform">
+            <form className={styles.postform} onSubmit={formSubmitHandler} name="myform">
               <div className={styles.form_content}>
                 <input id="id" name="id" placeholder="ID" type="text" />
                 <input id="url" name="url" placeholder="URL" type="text" />
@@ -109,7 +111,7 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
               <div className={styles.closeButtonContainer}>
                 <button
                   className={styles.button}
-                  onClick={addButtonDialogOpener}
+                  onClick={addFormToggler}
                   style={{ '--color': 'rgba(255, 58, 58, 0.7)' }}
                 > CLOSE </button>
               </div>
@@ -123,7 +125,11 @@ function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos
         {successMessage &&
           <div
             className={styles.messageContainer}
-            style={{ color: 'rgb(16, 187, 0)' }}
+            style={{
+              color: 'rgb(16, 187, 0)',
+              border: '1px solid rgba(13, 194, 0, 0.343)',
+              boxShadow: '0px 10px 25px 2px rgba(0, 187, 28, 0.7)'
+            }}
           >
             {successMessage}
           </div>
