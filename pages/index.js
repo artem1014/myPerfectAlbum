@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import MainContainer from '../components/MainContainer'
 import PhotoCard from '../components/PhotoCard';
-import SearchSortAdd from '../components/SearchSortAdd';
+import Filters from '../components/Filters';
 import styles from '../styles/Home.module.scss'
 import { formatDate } from '../utils/utils';
 
@@ -18,7 +18,6 @@ export default function Home({ posts }) {
       setPhotos(photos.sort((a, b) => b.id - a.id))
     }
     setSortDirection(!sortDirection)
-    console.log({ photos })
   }, [setSortDirection, sortDirection, photos])
 
   const onChangeFilter = useCallback((event) => {
@@ -37,14 +36,14 @@ export default function Home({ posts }) {
   return (
     <MainContainer keywords={'Main Page'}>
       <>
-        <SearchSortAdd
+        <Filters
           onChangeFilter={onChangeFilter}
           onSortClick={onSortClick}
           sortDirection={sortDirection}
           photos={photos}
           setPhotos={setPhotos}
         />
-        <div className={styles.content}>
+        <div className={styles.w}>
           {photos
             .filter(ph => ph.id.toString().includes(filterValue) || filterValue === '')
             .map((photo) => (

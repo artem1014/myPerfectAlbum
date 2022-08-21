@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react'
-import styles from '../styles/SearchSortAdd.module.scss'
-import { formatDate } from '../utils/utils'
+import styles from '../styles/Filters.module.scss'
+import { formatDate, validURL } from '../utils/utils'
 
-function SearchSortAdd({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos }) {
+function Filters({ onChangeFilter, onSortClick, sortDirection, photos, setPhotos }) {
 
   const [addPostDialog, setAddPostDialog] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   const addButtonDialogOpener = useCallback(() => {
     setAddPostDialog(!addPostDialog)
@@ -24,16 +25,22 @@ function SearchSortAdd({ onChangeFilter, onSortClick, sortDirection, photos, set
       createDate: formatDate(new Date())
     }
 
-    if (!Number.isInteger(+target.id.value)) {
-      setErrorMessage('Picture ID should be an integer')
+    if (!Number.isInteger(+target.id.value) || target.id.value < 0) {
+      setErrorMessage('Picture ID should be an integer greater 0')
+      setTimeout(() => setErrorMessage(''), 2000)
     } else if (photos.some(photo => photo.id === Number(target.id.value))) {
       setErrorMessage('Photo with this ID already exists')
+      setTimeout(() => setErrorMessage(''), 2000)
     } else if (!target.id.value || !target.url.value || !target.title.value) {
       setErrorMessage('You must fill all fields')
-    } else {
-      setErrorMessage('Great!')
-      setPhotos(prev => [...prev, newPhoto])
       setTimeout(() => setErrorMessage(''), 2000)
+    } else if (!validURL(target.url.value)) {
+      setErrorMessage('Enter valid URL')
+      setTimeout(() => setErrorMessage(''), 2000)
+    } else {
+      setSuccessMessage('Great!')
+      setPhotos(prev => [...prev, newPhoto])
+      setTimeout(() => setSuccessMessage(''), 2000)
       return
     }
   },
@@ -41,13 +48,13 @@ function SearchSortAdd({ onChangeFilter, onSortClick, sortDirection, photos, set
   )
 
   return (
-    <div className={styles.searchSortAddContainer}>
+    <div className={styles.filtersContainer}>
       <div className={styles.searchSortContainer}>
         <button onClick={onSortClick}>
           {sortDirection ?
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="rgba(82, 140, 255, 0.7)"><path d="M6 3l-6 8h4v10h4v-10h4l-6-8zm16 6h-8v-2h8v2zm2-6h-10v2h10v-2zm-4 8h-6v2h6v-2zm-2 4h-4v2h4v-2zm-2 4h-2v2h2v-2z" /></svg>
+            <img src='/sortAsc.svg' />
             :
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="rgba(82, 140, 255, 0.7)"><path d="M6 21l6-8h-4v-10h-4v10h-4l6 8zm16-12h-8v-2h8v2zm2-6h-10v2h10v-2zm-4 8h-6v2h6v-2zm-2 4h-4v2h4v-2zm-2 4h-2v2h2v-2z" /></svg>
+            <img src='/sortDesc.svg' />
           }
         </button>
         <div className={styles.input_control}>
@@ -57,27 +64,27 @@ function SearchSortAdd({ onChangeFilter, onSortClick, sortDirection, photos, set
       </div>
       <div className={styles.addContainer}>
         {!addPostDialog ? (
-          <div style={{ marginTop: '10px'}}>
+          <div className={styles.closeButtonContainer}>
             <button
               className={styles.button}
               onClick={addButtonDialogOpener}
               style={{ '--color': 'rgba(0, 163, 98, 0.7)' }}
             >
-              ADD NEW PHOTO
+              ADD NEW PHOTO TO THE ALBUM
             </button>
           </div>
         ) : (
-          <div className={styles.container}>
+          <div className={styles.addPostContainer}>
             <form className={styles.postform} onSubmit={addPostSubmitHandler} name="myform">
               <div className={styles.form_content}>
                 <input id="id" name="id" placeholder="ID" type="text" />
                 <input id="url" name="url" placeholder="URL" type="text" />
                 <input id="title" name="title" placeholder="TITLE" type="text" />
                 <button type='submit' className={styles.button}>
-                  ADD NEW PHOTO
+                  SUBMIT
                 </button>
               </div>
-              <div style={{ marginTop: '10px' }}>
+              <div className={styles.closeButtonContainer}>
                 <button
                   className={styles.button}
                   onClick={addButtonDialogOpener}
@@ -89,10 +96,19 @@ function SearchSortAdd({ onChangeFilter, onSortClick, sortDirection, photos, set
         )
         }
         {errorMessage &&
-          <div className={styles.errorContainer}> {errorMessage} </div>}
+          <div className={styles.messageContainer}> {errorMessage} </div>}
+
+        {successMessage &&
+          <div
+            className={styles.messageContainer}
+            style={{ color: 'rgb(16, 187, 0)' }}
+          >
+            {successMessage}
+          </div>
+        }
       </div >
     </div >
   )
 }
 
-export default SearchSortAdd
+export default Filters

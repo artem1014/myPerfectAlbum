@@ -2,140 +2,25 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
+  width: 960px;
+  margin: 0 auto;
 }
 
-@mixin imageSize($imgSize: 100%) {
-  max-width: $imgSize;
-}
-
-.columns_wrap {
-  display: flex;
-  align-content: center;
-  align-items: center;
-  flex-flow: wrap;
-}
-
-.image_responsive {
-  @include imageSize(100%);
-  display: block;
-  height: auto;
-  width: 100%;
-}
-
-.content_posts {
-  width: 100%;
-
-  .grid_blog {
-    -webkit-flex-direction: column;
-    -moz-flex-direction: column;
-    flex-direction: column;
-
-    justify-content: space-between;
-    box-sizing: border-box;
+@media (max-width: 960px) {
+  .content {
     width: 100%;
+    padding: 0 15px;
+  }
+}
 
-    .buttonContainer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 20px;
-    }
+@media (max-width: 678px) {
+  .content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
-    .blog {
-      transition: all 0.5s;
-      background: #fff;
-      box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
-      margin: 0 15px 30px;
-      padding: 15px;
-      width: calc(100%/1.5);
-
-      .block,
-      a {
-        transition: all 0.5s;
-        display: block;
-        text-decoration: none;
-
-        img {
-          @extend .image_responsive;
-          transition: all 0.5s;
-        }
-
-        .title_post {
-          transition: all 0.5s;
-          padding: 0 10px;
-          min-height: 80px;
-          margin-top: 20px;
-          display: flex;
-          justify-content: flex-start;
-          flex-direction: column;
-
-          h2 {
-            font: 600 1.5em 'Helvetica';
-            color: rgb(0, 0, 0);
-            margin: 0 0 10px;
-          }
-
-          p {
-            font: 100 0.7em 'Helvetica';
-            color: rgb(0, 0, 0);
-          }
-
-          button {
-            --color: rgba(82, 140, 255, 0.7);
-            --border: 1px;
-            --slant: 0.5em;
-
-            font: 100 0.7em 'Helvetica';
-            padding: 0.4em 1.2em;
-            border: none;
-            cursor: pointer;
-            color: var(--color);
-            background:
-              linear-gradient(to bottom left, var(--color) 50%, #0000 50.1%) top right,
-              linear-gradient(to top right, var(--color) 50%, #0000 50.1%) bottom left;
-            background-size: calc(var(--slant)) calc(1.3*var(--border));
-            background-repeat: no-repeat;
-            box-shadow:
-              0 0 0 200px inset var(--s, #0000),
-              0 0 0 var(--border) inset var(--color);
-            transition: color var(--t, 0.3s), background-size 0.3s;
-            width: calc(100%/3);
-          }
-
-          button:focus-visible {
-            outline-offset: calc(-1*var(--border));
-            outline: var(--border) solid #000c;
-            clip-path: none;
-            background-size: 0 0;
-          }
-
-          button:hover,
-          button:active {
-            background-size: 100% 100%;
-            color: white;
-            --t: 0.2s 0.1s;
-          }
-
-          button:active {
-            --s: #0005;
-            transition: none;
-          }
-        }
-      }
-
-      &:hover {
-        transition: all 0.5s;
-        box-shadow: 0px 10px 25px 2px rgba(82, 140, 255, 0.7);
-
-        a {
-          transition: all 0.5s;
-
-          .title_post {
-            transition: all 0.5s;
-
-          }
-        }
-      }
-    }
+@media (max-width: 500px) {
+  .content {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

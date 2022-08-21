@@ -10,7 +10,17 @@
   }
 
   body {
-    color: white;
+    color: black;
     background: rgb(245, 245, 245);
   }
+}
+
+.not-found {
+  margin: 30px;
+  text-align: center;
+}
+
+.not-found a {
+  color: rgba(82, 140, 255, 0.7);
+  text-decoration: underline;
 }

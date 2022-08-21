@@ -1,4 +1,4 @@
-.searchSortAddContainer {
+.filtersContainer {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,7 +14,7 @@
   flex-direction: column;
   margin: 5px 0;
 
-  .errorContainer {
+  .messageContainer {
     font: 100 0.7em 'Helvetica';
     color: rgb(187, 0, 0);
     padding: 5px;
@@ -34,6 +34,7 @@
     border: none;
     cursor: pointer;
     color: black;
+    border-radius: 4px;
 
     &:hover {
       box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
@@ -76,7 +77,7 @@
   }
 }
 
-.container {
+.addPostContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -84,10 +85,14 @@
   margin: 10px 0;
 }
 
+.closeButtonContainer {
+  margin-top: 10px;
+}
+
 .postform {
   background-color: white;
   padding: 2em;
-  border-radius: 8px;
+  border-radius: 4px;
   max-width: 600px;
   display: flex;
   flex-wrap: wrap;
@@ -142,6 +147,7 @@
     0 0 0 var(--border) inset var(--color);
   transition: color var(--t, 0.3s), background-size 0.3s;
   width: 100%;
+  border-radius: 4px;
 }
 
 .button:focus-visible {
